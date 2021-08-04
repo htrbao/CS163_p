@@ -236,7 +236,8 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 			if (!res1) return false;
 
 			for (long i = 0; i < res1->dataIndex.size(); i++)
-				score[res1->dataIndex[i].second].score = 0;
+				if(score[res1->dataIndex[i].second].score == -1)
+					score[res1->dataIndex[i].second].score = 0;
 
 			if (tmp.back() == '"') {
 				for (long i = 0; i < res1->dataIndex.size(); i++)
@@ -274,6 +275,70 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 				res1 = res2;
 			}
 		}
+		if (tmp[0] == '-') {//minus case
+			Trienode* cur = searchWord(root, tmp);
+			if (cur) {
+				for (long kk = 0; kk < cur->dataIndex.size(); kk++)
+				{
+					score[cur->dataIndex[kk].second].score = -1000;	
+				}
+			}
+			continue;
+		}
+		Trienode* searchRes;
+		if (tmp == "OR") {
+			ss >> tmp;
+			searchRes = searchWord(root, tmp);
+			if (searchRes) {
+				for (long kk = 0; kk < searchRes->dataIndex.size(); kk++)
+				{
+					score[searchRes->dataIndex[kk].second].fileIndex = searchRes->dataIndex[kk].second;
+					score[searchRes->dataIndex[kk].second].score += (score[searchRes->dataIndex[kk].second].score == -1 ? 2 : 1);
+					score[searchRes->dataIndex[kk].second].pos.insert(searchRes->dataIndex[kk].first);
+				}
+			}
+			continue;
+		}
+		searchRes = searchWord(root, tmp);
+		if (tmp[0] == '+') {
+			if (!searchRes) return false;
+			for (long kk = 0; kk < searchRes->dataIndex.size(); kk++)
+			{
+				score[searchRes->dataIndex[kk].second].fileIndex = searchRes->dataIndex[kk].second;
+				score[searchRes->dataIndex[kk].second].score += (score[searchRes->dataIndex[kk].second].score == -1 ? 2 : 1);
+				score[searchRes->dataIndex[kk].second].pos.insert(searchRes->dataIndex[kk].first);
+			}
+		}
+		if (searchWord(stopword, tmp)) continue;
+		if (tmp == "AND" || tmp == "filetype:txt") continue;
+		if (!searchRes) {
+			bool isOr = false;
+			while (ss >> tmp) {
+				if (tmp == "OR") {
+					ss >> tmp;
+					searchRes = searchWord(root, tmp);
+					if (searchRes) {
+						isOr = true;
+						for (long kk = 0; kk < searchRes->dataIndex.size(); kk++) {
+							score[searchRes->dataIndex[kk].second].fileIndex = searchRes->dataIndex[kk].second;
+							score[searchRes->dataIndex[kk].second].score += (score[searchRes->dataIndex[kk].second].score == -1 ? 2 : 1);
+							score[searchRes->dataIndex[kk].second].pos.insert(searchRes->dataIndex[kk].first);
+						}
+						break;
+					}
+				}
+				else return false;
+			}
+			if (!isOr) return false;
+		}
+		else {
+			for (long kk = 0; kk < searchRes->dataIndex.size(); kk++)
+			{
+				score[searchRes->dataIndex[kk].second].fileIndex = searchRes->dataIndex[kk].second;
+				score[searchRes->dataIndex[kk].second].score += (score[searchRes->dataIndex[kk].second].score == -1 ? 2 : 1);
+				score[searchRes->dataIndex[kk].second].pos.insert(searchRes->dataIndex[kk].first);
+			}
+		}
 	}
 	return true;
 }
@@ -292,6 +357,20 @@ void deleteTree(Trienode*& root)
 }
 
 //
+
+bool checkOperator(string query)
+{
+	stringstream ss(query);
+	string tmp;
+	while (ss >> tmp) {
+		if (tmp.substr(0, 8) == "intitle:") return false;
+		if (tmp == "AND" || tmp == "OR" || tmp[0] == '-' || tmp == "*" || tmp[0] == '"' || tmp == "filetext:txt" || tmp.back() == '*') return false;
+		for (long kk = 0; kk < tmp.size() - 2; kk++) {
+			if (tmp[kk] == '.' && tmp[kk + 1] == '.') return false;
+		}
+	}
+	return true;
+}
 
 bool isNumber(char c)
 {

@@ -40,11 +40,16 @@ int main()
 		}
 		string query;
 		getline(cin, query);
-		query = '"' + query + '"';
+		/*if(checkOperator(query)) 
+			query = '"' + query + '"';*/
 		cout << query << endl;
 		if (!searchAll(searchRoot, query, stopword, scores)) {
 			cout << "have nothing";
-			break;
+			long cont;
+			cout << "CONTINUE: "; cin >> cont;
+			if (!cont) break;
+			cin.ignore();
+			continue;
 		}
 		sort(scores, scores + 11268, cmp);
 		long ir = 0;

@@ -53,6 +53,8 @@ void deleteTree(Trienode*& root);
 
 //
 
+bool checkOperator(string query);
+
 bool isNumber(char c);
 
 bool accept(char& c);
