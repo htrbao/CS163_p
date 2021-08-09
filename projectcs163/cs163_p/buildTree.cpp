@@ -155,6 +155,36 @@ Trienode* searchWord(Trienode* root, string word) {
 	return cur;
 }
 
+Trienode* searchWordForIncomplete(Trienode* root, string word) {
+	Trienode* cur = root;
+	for (long i = 0; i < word.size(); i++)
+	{
+		long index = convertIndex(word[i]);
+		if (index == -1) continue;
+		if (!cur->character[index]) return nullptr;
+		cur = cur->character[index];
+	}
+
+	return cur;
+}
+
+void searchIncomplete(Trienode* root, store score[])
+{
+	if (!root) return;
+	if (root->isEnd) {
+		for (long kk = 0; kk < root->dataIndex.size(); kk++) {
+			score[root->dataIndex[kk].second].fileIndex = root->dataIndex[kk].second;
+			score[root->dataIndex[kk].second].score += (score[root->dataIndex[kk].second].score == -1 ? 2 : 1);
+			score[root->dataIndex[kk].second].pos.insert(root->dataIndex[kk].first);
+		}
+	}
+	for (long i = 0; i < 42; i++) {
+		if (root->character[i] != nullptr) {
+			searchIncomplete(root->character[i], score);
+		}
+	}
+}
+
 void exact(vector <long>& a1, vector<long>& a2, long cnt, vector<long>& out1, vector<long>& out2)
 {
 	long i = 0, j = 0;
@@ -248,6 +278,7 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 				}
 				continue;
 			}
+
 			string tmp2;
 			while (ss >> tmp2)
 			{
@@ -309,8 +340,13 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 				score[searchRes->dataIndex[kk].second].pos.insert(searchRes->dataIndex[kk].first);
 			}
 		}
+		if (tmp[tmp.size() - 1] == '*') {
+			searchRes = searchWordForIncomplete(root, tmp);
+			if (searchRes) searchIncomplete(searchRes, score);
+		}
 		if (searchWord(stopword, tmp)) continue;
 		if (tmp == "AND" || tmp == "filetype:txt") continue;
+		
 		if (!searchRes) {
 			bool isOr = false;
 			while (ss >> tmp) {

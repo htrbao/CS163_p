@@ -43,6 +43,8 @@ void insertStopword(Trienode*& stopword, string w);
 
 Trienode* searchWord(Trienode* root, string word);
 
+void searchIncomplete(Trienode* root, store score[]);
+
 void exact(vector <long>& a1, vector<long>& a2, long cnt, vector<long>& out1, vector<long>& out2);
 
 void handleWord(vector<pair<long, long> > res1, vector<pair<long, long> > res2, long cnt, store score[]);
