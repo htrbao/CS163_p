@@ -21,7 +21,7 @@ void build2Tree(Trienode*& searchTree, Trienode*& stopword)
 {
 	//build SearchTree
 	//for (long i = 0; i < 11268; i++)
-	for (long i = 0; i < 10; i++)
+	for (long i = 0; i < 100; i++)
 	{
 		handlingFile(searchTree, i);
 		cout << "build ok file " << i << endl;
@@ -415,10 +415,6 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 		}
 		if (tmp[0] == '~') {
 			vector <string> s = getSyn(tmp.substr(1));
-			for (long i = 0; i < s.size(); i++)
-			{
-				cout << s[i] << endl;
-			}
 			for (long hh = 0; hh < s.size(); hh++)
 			{
 				searchRes = searchWord(root, s[hh]);
