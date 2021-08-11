@@ -49,6 +49,10 @@ void exact(vector <long>& a1, vector<long>& a2, long cnt, vector<long>& out1, ve
 
 void handleWord(vector<pair<long, long> > res1, vector<pair<long, long> > res2, long cnt, store score[]);
 
+vector <string> getSyn(string tmp);
+
+vector <string> getAnt(string tmp);
+
 bool searchAll(Trienode* root, string query, Trienode* stopword, store score[]);
 
 void deleteTree(Trienode*& root);
@@ -64,5 +68,7 @@ bool accept(char& c);
 string senFilter(string sen);
 
 bool cmp(store& a, store& b);
+
+void drawLogo();
 
 #endif // !_BUILDTREE_H_

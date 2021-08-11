@@ -27,10 +27,12 @@ int main()
 	updateFileData();
 
 	build2Tree(searchRoot, stopword);
+
+	system("cls");
 	
 	//end build tree
 
-	cout << "OK!" << endl;
+	drawLogo();
 
 	while (1)
 	{

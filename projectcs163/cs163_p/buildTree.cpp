@@ -254,6 +254,75 @@ void handleWord(vector<pair<long, long> > res1, vector<pair<long, long> > res2, 
 	}
 }
 
+vector <string> getSyn(string tmp) {
+	vector <string> res;
+	if ('a' <= tmp[0] && tmp[0] <= 'z') tmp[0] -= 32;
+	for (long i = 1; i < tmp.size(); i++)
+	{
+		if ('A' <= tmp[i] && tmp[i] <= 'Z') tmp[i] += 32;
+	}
+	ifstream ifs;
+	ifs.open("Search-Engine-Data/___synant.txt");
+	string cur;
+	while (!ifs.eof()) {
+		getline(ifs, cur);
+		stringstream ss(cur);
+		ss >> cur;
+		if (cur != "KEY:") continue;
+		ss >> cur;
+		if (cur != tmp) continue;
+		if (cur > tmp) return res;
+		getline(ifs, cur);
+		if (cur == "") getline(ifs, cur);;
+		stringstream st(cur);
+		st >> cur;
+		if (cur != "SYN:") break;
+		while (st >> cur)
+		{
+			res.push_back(cur);
+		}
+		ifs.close();
+		return res;
+	}
+	ifs.close();
+	return res;
+}
+
+vector <string> getAnt(string tmp) {
+	vector <string> res;
+	if ('a' <= tmp[0] && tmp[0] <= 'z') tmp[0] -= 32;
+	for (long i = 1; i < tmp.size(); i++)
+	{
+		if ('A' <= tmp[i] && tmp[i] <= 'Z') tmp[i] += 32;
+	}
+	ifstream ifs;
+	ifs.open("Search-Engine-Data/___synant.txt");
+	string cur;
+	while (!ifs.eof()) {
+		getline(ifs, cur);
+		stringstream ss(cur);
+		ss >> cur;
+		if (cur != "KEY:") continue;
+		ss >> cur;
+		if (cur != tmp) continue;
+		if (cur > tmp) return res;
+		getline(ifs, cur);
+		getline(ifs, cur);
+		if (cur == "") getline(ifs, cur);
+		stringstream st(cur);
+		st >> cur;
+		if (cur != "ANT:") break;
+		while (st >> cur)
+		{
+			res.push_back(cur);
+		}
+		ifs.close();
+		return res;
+	}
+	ifs.close();
+	return res;
+}
+
 bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 {
 	stringstream ss(query);
@@ -343,6 +412,40 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 		if (tmp[tmp.size() - 1] == '*') {
 			searchRes = searchWordForIncomplete(root, tmp);
 			if (searchRes) searchIncomplete(searchRes, score);
+		}
+		if (tmp[0] == '~') {
+			vector <string> s = getSyn(tmp.substr(1));
+			for (long i = 0; i < s.size(); i++)
+			{
+				cout << s[i] << endl;
+			}
+			for (long hh = 0; hh < s.size(); hh++)
+			{
+				searchRes = searchWord(root, s[hh]);
+				if (searchRes) {
+					for (long kk = 0; kk < searchRes->dataIndex.size(); kk++)
+					{
+						score[searchRes->dataIndex[kk].second].fileIndex = searchRes->dataIndex[kk].second;
+						score[searchRes->dataIndex[kk].second].score += (score[searchRes->dataIndex[kk].second].score == -1 ? 2 : 1);
+						score[searchRes->dataIndex[kk].second].pos.insert(searchRes->dataIndex[kk].first);
+					}
+				}
+			}
+		}
+		if (tmp[0] == '!') {
+			vector <string> s = getAnt(tmp.substr(1));
+			for (long hh = 0; hh < s.size(); hh++)
+			{
+				searchRes = searchWord(root, s[hh]);
+				if (searchRes) {
+					for (long kk = 0; kk < searchRes->dataIndex.size(); kk++)
+					{
+						score[searchRes->dataIndex[kk].second].fileIndex = searchRes->dataIndex[kk].second;
+						score[searchRes->dataIndex[kk].second].score += (score[searchRes->dataIndex[kk].second].score == -1 ? 2 : 1);
+						score[searchRes->dataIndex[kk].second].pos.insert(searchRes->dataIndex[kk].first);
+					}
+				}
+			}
 		}
 		if (searchWord(stopword, tmp)) continue;
 		if (tmp == "AND" || tmp == "filetype:txt") continue;
@@ -441,4 +544,14 @@ string senFilter(string sen)
 bool cmp(store& a, store& b)
 {
 	return a.score > b.score;
+}
+
+void drawLogo()
+{
+	cout << "  ___________________________________   ____.____     ___________" << endl;
+	cout << " /   _____/\\_   _____/\\_   _____/\\   \\ /   /|    |    \\_   _____/" << endl;
+	cout << " \\_____  \\  |    __)_  |    __)_  \\   Y   / |    |     |    __)_" << endl;
+	cout << " /        \\ |        \\ |        \\  \\     /  |    |___  |        \\" << endl;
+	cout << "/_______  //_______  //_______  /   \\___/   |_______ \\/_______  /" << endl;
+	cout << "        \\/	   \\/         \\/                    \\/        \\/" << endl;
 }
