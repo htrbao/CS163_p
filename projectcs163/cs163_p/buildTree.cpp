@@ -1,4 +1,5 @@
 #include "buildTree.h"
+#include "windowConsole.h"
 
 string fileData[12000];
 
@@ -21,7 +22,7 @@ void build2Tree(Trienode*& searchTree, Trienode*& stopword)
 {
 	//build SearchTree
 	//for (long i = 0; i < 11268; i++)
-	for (long i = 0; i < 100; i++)
+	for (long i = 0; i < 10; i++)
 	{
 		handlingFile(searchTree, i);
 		cout << "build ok file " << i << endl;
@@ -544,10 +545,49 @@ bool cmp(store& a, store& b)
 
 void drawLogo()
 {
-	cout << "  ___________________________________   ____.____     ___________" << endl;
-	cout << " /   _____/\\_   _____/\\_   _____/\\   \\ /   /|    |    \\_   _____/" << endl;
-	cout << " \\_____  \\  |    __)_  |    __)_  \\   Y   / |    |     |    __)_" << endl;
-	cout << " /        \\ |        \\ |        \\  \\     /  |    |___  |        \\" << endl;
-	cout << "/_______  //_______  //_______  /   \\___/   |_______ \\/_______  /" << endl;
-	cout << "        \\/	   \\/         \\/                    \\/        \\/" << endl;
+	long a = 40;
+	gotoxy(25 + a, 0); setTextColor(9); cout << "  _________";
+	gotoxy(25 + a, 1); setTextColor(9); cout << " /   _____/";
+	gotoxy(25 + a, 2); setTextColor(9); cout << " \\_____  \\";
+	gotoxy(25 + a, 3); setTextColor(9); cout << " /        \\";
+	gotoxy(25 + a, 4); setTextColor(9); cout << "/_______  /";
+	gotoxy(25 + a, 5); setTextColor(9); cout << "        \\/";
+
+	gotoxy(36 + a, 0); setTextColor(12); cout << "___________";
+	gotoxy(36 + a, 1); setTextColor(12); cout << "\\_   _____/";
+	gotoxy(36 + a, 2); setTextColor(12); cout << " |    __)_";
+	gotoxy(36 + a, 3); setTextColor(12); cout << " |        \\";
+	gotoxy(36 + a, 4); setTextColor(12); cout << "/_______  /";
+	gotoxy(36 + a, 5); setTextColor(12); cout << "        \\/";
+
+	gotoxy(47 + a, 0); setTextColor(14); cout << "___________";
+	gotoxy(47 + a, 1); setTextColor(14); cout << "\\_   _____/";
+	gotoxy(47 + a, 2); setTextColor(14); cout << " |    __)_";
+	gotoxy(47 + a, 3); setTextColor(14); cout << " |        \\";
+	gotoxy(47 + a, 4); setTextColor(14); cout << "/_______  /";
+	gotoxy(47 + a, 5); setTextColor(14); cout << "        \\/";
+
+	gotoxy(58 + a, 0); setTextColor(9); cout << "____   ____";
+	gotoxy(58 + a, 1); setTextColor(9); cout << "\\   \\ /   /";
+	gotoxy(58 + a, 2); setTextColor(9); cout << " \\   Y   / ";
+	gotoxy(58 + a, 3); setTextColor(9); cout << "  \\     /  ";
+	gotoxy(58 + a, 4); setTextColor(9); cout << "   \\___/   ";
+
+	gotoxy(69 + a, 0); setTextColor(10); cout << ".____     ";
+	gotoxy(69 + a, 1); setTextColor(10); cout << "|    |    ";
+	gotoxy(69 + a, 2); setTextColor(10); cout << "|    |    ";
+	gotoxy(69 + a, 3); setTextColor(10); cout << "|    |___ ";
+	gotoxy(69 + a, 4); setTextColor(10); cout << "|_______ \\";
+	gotoxy(69 + a, 5); setTextColor(10); cout << "        \\/";
+
+	gotoxy(79 + a, 0); setTextColor(12); cout << "___________";
+	gotoxy(79 + a, 1); setTextColor(12); cout << "\\_   _____/";
+	gotoxy(79 + a, 2); setTextColor(12); cout << " |    __)_";
+	gotoxy(79 + a, 3); setTextColor(12); cout << " |        \\";
+	gotoxy(79 + a, 4); setTextColor(12); cout << "/_______  /";
+	gotoxy(79 + a, 5); setTextColor(12); cout << "        \\/";
+
+	cout << endl;
+
+	setTextColor(7);
 }

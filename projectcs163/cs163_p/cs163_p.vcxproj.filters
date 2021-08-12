@@ -21,9 +21,15 @@
     <ClCompile Include="buildTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="windowConsole.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="buildTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="windowConsole.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

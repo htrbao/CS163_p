@@ -141,9 +141,11 @@
   <ItemGroup>
     <ClCompile Include="buildTree.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="windowConsole.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="buildTree.h" />
+    <ClInclude Include="windowConsole.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

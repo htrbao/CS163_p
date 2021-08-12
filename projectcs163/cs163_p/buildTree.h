@@ -3,6 +3,7 @@
 #define _BUILDTREE_H_
 
 #include <iostream>
+#include <time.h>
 #include <string>
 #include <set>
 #include <algorithm>

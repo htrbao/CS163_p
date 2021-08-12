@@ -1,0 +1,21 @@
+!changevu
+vu lan
+!change
+~change
+celebration
+hello
+"vu lan bao"
+vu
+vu lan
+yellow OR red
+red ~change
+vu lan
+vu lan red
+yellow OR red
+vu lan red
+!change
+Vu lan
+vu lan 
+~change -vu yellow OR red
+vu lan bao hieu
+vu lan -bao -hieu
