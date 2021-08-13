@@ -19,3 +19,9 @@ vu lan
 ~change -vu yellow OR red
 vu lan bao hieu
 vu lan -bao -hieu
+vu
+camera $10..$100
+camera $49
+camera $10..$100
+camera $10..$100
+camera $10..$30

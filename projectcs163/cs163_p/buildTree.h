@@ -11,6 +11,9 @@
 #include <vector>
 #include <ctime>
 #include <fstream>
+#include <utility>
+
+#define edgge pair<int,int>
 
 using namespace std;
 
@@ -71,5 +74,9 @@ string senFilter(string sen);
 bool cmp(store& a, store& b);
 
 void drawLogo();
+
+bool isSearchWithinARange(string s);
+
+pair<string, edgge> rangeBetweenTwoStr_(string s);
 
 #endif // !_BUILDTREE_H_

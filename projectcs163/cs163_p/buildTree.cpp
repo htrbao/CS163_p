@@ -381,12 +381,45 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 			if (cur) {
 				for (long kk = 0; kk < cur->dataIndex.size(); kk++)
 				{
-					score[cur->dataIndex[kk].second].score = -1000;	
+					score[cur->dataIndex[kk].second].score = -11000;	
 				}
 			}
 			continue;
 		}
 		Trienode* searchRes;
+
+		//TASK 11 - START BY HIENLV
+		//TASK 11 - START
+		//TASK 11 - START
+		//TASK 11 - START
+		if (isSearchWithinARange(tmp)) {
+			pair<string, edgge> g = rangeBetweenTwoStr_(tmp); ///<ki tu dac biet,<so dau tien, so cuoi cung>>
+			string x = "";
+			for (int i = g.second.first; i <= g.second.second; ++i) { //kiem tung so trong khoan xx..yy trong Trie
+				string cur = to_string(i);
+				if (isNumber(tmp[0]))
+					x = cur + g.first;
+				else
+					x = g.first + cur;
+
+				searchRes = searchWord(root, x);
+				if (searchRes) {
+					for (long kk = 0; kk < searchRes->dataIndex.size(); kk++)
+					{
+						score[searchRes->dataIndex[kk].second].fileIndex = searchRes->dataIndex[kk].second;
+						score[searchRes->dataIndex[kk].second].score += (score[searchRes->dataIndex[kk].second].score == -1 ? 2 : 1);
+						score[searchRes->dataIndex[kk].second].pos.insert(searchRes->dataIndex[kk].first);
+					}
+				}
+			}
+			continue;
+		}
+
+		//END END END END END END
+		//END END END END END END
+		//END END END END END END
+		//END END END END END END
+
 		if (tmp == "OR") {
 			ss >> tmp;
 			searchRes = searchWord(root, tmp);
@@ -406,7 +439,7 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 			for (long kk = 0; kk < searchRes->dataIndex.size(); kk++)
 			{
 				score[searchRes->dataIndex[kk].second].fileIndex = searchRes->dataIndex[kk].second;
-				score[searchRes->dataIndex[kk].second].score += (score[searchRes->dataIndex[kk].second].score == -1 ? 2 : 1);
+				score[searchRes->dataIndex[kk].second].score += 1000;
 				score[searchRes->dataIndex[kk].second].pos.insert(searchRes->dataIndex[kk].first);
 			}
 		}
@@ -590,4 +623,42 @@ void drawLogo()
 	cout << endl;
 
 	setTextColor(7);
+}
+
+bool isSearchWithinARange(string s) {
+	///string s = "123..154" -> RETURN TRUE
+	///string s = "12.331" -> RETURN FALSE
+	for (int i = 0; i < s.size(); ++i) {
+		if (s[i] == '.' && s[i + 1] == '.')
+			return true;
+	}
+	return false;
+}
+
+pair<string, edgge> rangeBetweenTwoStr_(string s) {
+	unsigned int n = s.size();
+	int num = 0; int x; int a = 0;
+	pair<string, edgge> g1("", { 0,0 });
+	for (int i = 0; i < n; ++i) {
+		if (s[i] == '.') {
+			a = num;
+			num = 0;
+			i++;
+			continue;
+		}
+		if (isNumber(s[i])) {
+			x = int(s[i]) - int('0');
+			if (num == 0)
+				num += x;
+			else
+				num = num * 10 + x;
+		}
+		else
+			g1.first = s[i];
+	}
+	g1.second.first = a;
+	g1.second.second = num;
+	///Ex1 : string s = 123..156 -> g1 = ("",(123,156))
+	///Ex2 : string s = $40..$50 -> g1 = ("$",(40,50))
+	return g1;
 }
