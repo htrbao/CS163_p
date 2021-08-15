@@ -37,12 +37,13 @@ int main()
 
 	while (1)
 	{
-		clearSearch();
 		for (long i = 0; i < 11268; i++)
 		{
 			scores[i].score = -1;
 		}
 		string query;
+
+		clearSearch();
 		gotoxy(52, 8);
 		getline(cin, query);
 
@@ -74,7 +75,7 @@ int main()
 		if (!searchAll(searchRoot, query, stopword, scores)) {
 			gotoxy(10, 11); cout << "have nothing";
 			long cont;
-			cout << "CONTINUE: "; cin >> cont;
+			gotoxy(10, 12); cout << "CONTINUE: "; cin >> cont;
 			if (!cont) break;
 			cin.ignore();
 			continue;
@@ -84,14 +85,33 @@ int main()
 		long ir = 0;
 		gotoxy(51, 10);
 		cout << "(" << double(end - start) / CLOCKS_PER_SEC << " seconds)" << endl;
-		while (scores[ir].score > 0)
+		while (scores[ir].score > 0) ir++;
+		long countCur = 0;
+		while (1)
 		{
-			cout << fileData[scores[ir].fileIndex] << endl;
-			ir++;
+			for (long i = 0; i <= 20; i++) {
+				gotoxy(0, 10 + i);
+				for (long j = 0; j <= 199; j++) {
+					cout << " ";
+				}
+			}
+			gotoxy(0, 10);
+			for (long i = 0; i <= 2; i++)
+			{
+				if (i + countCur * 3 >= ir) break;
+				//cout << fileData[scores[i + countCur * 3].fileIndex] << endl;
+				showResult(scores[i + countCur * 3].pos, fileData[scores[i + countCur * 3].fileIndex]);
+				cout << endl;
+			}
+			char c = _getch();
+			if (c == char(77)) countCur++;
+			else if (c == char(75)) countCur--;
+			else if (c == char(13)) {
+				break;
+			}
+			if (countCur < 0) countCur = ir / 3;
+			if (countCur > (ir - 1)/ 3) countCur = 0;
 		}
-		long cont;
-		cout << "CONTINUE: "; cin >> cont;
-		if (!cont) break;
 		cin.ignore();
 	}
 	

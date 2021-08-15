@@ -154,9 +154,9 @@ void clearSearch() {
 	for (long i = 1; i < 96; i++) {
 		cout << " ";
 	}
-	for (long i = 0; i <= 20; i++) {
+	for (long i = 0; i <= 30; i++) {
 		gotoxy(0, 10 + i);
-		for (long j = 0; j <= 150; j++) {
+		for (long j = 0; j <= 199; j++) {
 			cout << " ";
 		}
 	}

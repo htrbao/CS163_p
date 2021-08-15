@@ -22,7 +22,7 @@ void build2Tree(Trienode*& searchTree, Trienode*& stopword)
 {
 	//build SearchTree
 	//for (long i = 0; i < 11268; i++)
-	for (long i = 0; i < 10; i++)
+	for (long i = 0; i < 150; i++)
 	{
 		handlingFile(searchTree, i);
 		cout << "build ok file " << i << endl;
@@ -512,6 +512,61 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[])
 	return true;
 }
 
+void showResult(set <long> pos, string filename) {
+	setTextColor(15);
+	cout << filename << endl;
+	setTextColor(7);
+	if (pos.size() == 0) return;
+	ifstream ifs;
+	ifs.open("Search-Engine-Data/" + filename);
+	if (!ifs.is_open()) {
+		cout << "Error" << endl;
+		return;
+	}
+	string tmp;
+	cout << tmp;
+	long cnt = 0, length = -1;
+	set <long>::iterator itr = pos.begin();
+	while (!ifs.eof()) {
+		string t;
+		getline(ifs, tmp, '.');
+		if (tmp.size() == 0) continue;
+		if (isNumber(tmp[tmp.size() - 1])) {
+			getline(ifs, t, '.');
+			if (t.size() != 0 && isNumber(t[0])) {
+				tmp = tmp + "." + t;
+			}
+			else tmp = tmp + " " + t;
+		}
+		senFilter(tmp);
+		long num = countWordInSen(tmp);
+		length += num;
+		if (*itr > length) {
+			cnt += num;
+			continue;
+		}
+		stringstream ss(tmp);
+		cout << "...";
+		while (ss >> tmp) {
+			if (itr != pos.end() && *itr == cnt) {
+				itr++;
+				setTextColor(11);
+				cout << tmp << " ";
+				setTextColor(7);
+			}
+			else {
+				cout << tmp << " ";
+			}
+			cnt++;
+		}
+		if (itr == pos.end()) {
+			ifs.close();
+			return;
+		}
+	}
+	ifs.close();
+}
+
 void deleteTree(Trienode*& root)
 {
 	if (!root) return;
@@ -526,6 +581,14 @@ void deleteTree(Trienode*& root)
 }
 
 //
+
+long countWordInSen(string str) {
+	stringstream ss(str);
+	string emp;
+	long cnt = 0;
+	while (ss >> emp) cnt++;
+	return cnt;
+}
 
 bool checkOperator(string query)
 {

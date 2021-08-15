@@ -61,7 +61,11 @@ bool searchAll(Trienode* root, string query, Trienode* stopword, store score[]);
 
 void deleteTree(Trienode*& root);
 
+void showResult(set <long> pos, string filename);
+
 //
+
+long countWordInSen(string str);
 
 bool checkOperator(string query);
 
